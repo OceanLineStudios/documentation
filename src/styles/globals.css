@@ -6,9 +6,7 @@
 /* @variant dark (&:where(.dark *)); */
 
 body {
-  --x-color-primary-400: #14c92f;
-  --x-color-primary-600: #14c92f;
-  --x-color-primary-500: #14c92f;
-  --x-color-primary-100: hsl(112deg 100% calc(45% + 49%));
-  --x-color-primary-800: hsl(112deg 100% calc(45% - 13%));
+  --x-color-primary-400: #1465c9;
+  --x-color-primary-600: #1465c9;
+  --x-color-primary-500: #1465c9;
 }

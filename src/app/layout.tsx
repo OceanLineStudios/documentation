@@ -8,27 +8,27 @@ import Link from "next/link";
 import Tebex from "../icons/tebex";
 
 export const metadata = {
-  metadataBase: new URL("https://docs.hopestudios.eu"),
+  metadataBase: new URL("https://docs.OceanLineStudios.eu"),
   title: {
-    template: "%s - Hope Studios",
+    template: "%s - OceanLineStudios",
   },
-  description: "Hope Studios: Documentation",
-  applicationName: "Hope Studios",
+  description: "OceanLineStudios: Documentation",
+  applicationName: "OceanLineStudios",
   generator: "Next.js",
   appleWebApp: {
-    title: "Hope Studios",
+    title: "OceanLineStudios",
   },
   openGraph: {
-    title: "Hope Studios",
-    description: "Hope Studios: Documentation",
-    url: "https://docs.hopestudios.eu",
-    siteName: "Hope Studios",
+    title: "OceanLineStudios",
+    description: "OceanLineStudios: Documentation",
+    url: "https://docs.OceanLineStudios.eu",
+    siteName: "OceanLineStudios",
     images: [
       {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "Hope Studios Open Graph Image",
+        alt: "OceanLineStudios Open Graph Image",
       },
     ],
     type: "website",
@@ -38,7 +38,7 @@ export const metadata = {
     "msapplication-TileColor": "#fff",
   },
   twitter: {
-    site: "https://docs.hopestudios.eu",
+    site: "https://docs.OceanLineStudios.eu",
   },
 };
 
@@ -51,13 +51,18 @@ export default async function RootLayout({
     <Navbar
       logo={
         <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="Hope Studios" width={32} height={32} />
-          <b>Hope Studios</b>
+          <Image
+            src="/logo.png"
+            alt="OceanLineStudios"
+            width={32}
+            height={32}
+          />
+          <b>OceanLineStudios</b>
         </div>
       }
       chatLink="https://discord.gg/85YNeDTBB9"
       children={
-        <Link href="https://hopestudios.tebex.io/" target="_blank">
+        <Link href="https://oceanlinestudios.tebex.io/" target="_blank">
           <Tebex />
         </Link>
       }
@@ -72,10 +77,10 @@ export default async function RootLayout({
         <Layout
           navbar={navbar}
           footer={
-            <Footer>MIT {new Date().getFullYear()} © Hope Studios.</Footer>
+            <Footer>MIT {new Date().getFullYear()} © OceanLineStudios.</Footer>
           }
           editLink="Edit this page on GitHub"
-          docsRepositoryBase="https://github.com/hopestudios-fivem/documentation/blob/main"
+          docsRepositoryBase="https://github.com/oceanlinestudios/documentation/blob/main"
           sidebar={{ defaultMenuCollapseLevel: 1 }}
           pageMap={pageMap}
         >
