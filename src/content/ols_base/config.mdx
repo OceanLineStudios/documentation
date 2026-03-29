@@ -1,0 +1,85 @@
+import { Table } from "nextra/components";
+
+# Configuration (`config.lua`)
+
+All options below live in **`config.lua`** at the root of the **ols_base** resource. After editing, restart **ols_base** (or the server).
+
+## Overview
+
+| Option | Purpose |
+| --- | --- |
+| `debugMode` | When `true`, allows extra debug logging inside the base. Set `false` on production if you want less noise. |
+| `voiceSystem` | How voice is **detected**: `auto`, or force `pma-voice` / `saltychat`. Used by shared voice logic so OLS resources (e.g. HUD) know which system is active. |
+| `voiceResourceName` | Folder names of the **pma-voice** and **Salty Chat** resources on your server. Must match `resources` directory names. |
+| `pointRenderDistance` | How far (in meters) interaction **points** can be drawn when scripts use the base’s point system. |
+| `interactionDistance` | How close the player must be (meters) for point **interaction** to apply. |
+| `adminGroups` | Group names treated as **admin** for `isAdmin`-style checks in the framework bridge. |
+| `showNotification` | Function the base calls to show a **notification** on the client (default wires ESX-style events). |
+| `showHelpNotification` | Function for **help** text notifications (default wires ESX-style events). |
+
+## Voice
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Field</Table.Th>
+      <Table.Th>Values</Table.Th>
+      <Table.Th>Meaning</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td><code>voiceSystem</code></Table.Td>
+      <Table.Td><code>"auto"</code>, <code>"pma-voice"</code>, <code>"saltychat"</code></Table.Td>
+      <Table.Td><code>auto</code>: use whichever voice resource is started first (pma, then salty). Forced modes skip detection.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>voiceResourceName.pma</code></Table.Td>
+      <Table.Td>string</Table.Td>
+      <Table.Td>Default <code>"pma-voice"</code>. Change if your resource folder name differs.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>voiceResourceName.saltychat</code></Table.Td>
+      <Table.Td>string</Table.Td>
+      <Table.Td>Default <code>"saltychat"</code>. Change if your folder name differs.</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+If **`auto`** is set but **neither** resource is started, the base will error until you start one or switch to a forced mode.
+
+## Distances
+
+These affect behavior when OLS scripts use the base’s **client point** helpers (markers / proximity), not the HUD layout directly.
+
+| Field | Default (example) | Meaning |
+| --- | --- | --- |
+| `pointRenderDistance` | `20` | Max distance to show/render the point. |
+| `interactionDistance` | `2` | Max distance to count as “at” the point for interaction. |
+
+## Admin groups
+
+`adminGroups` is a Lua list of **permission group** names (e.g. `"admin"`, `"superadmin"`). They should match what your **framework** uses for staff. The server bridge uses this list when resolving **admin** checks.
+
+If staff features never trigger, verify these strings match your framework’s group names.
+
+## Notification hooks
+
+The default config triggers **ESX-style** client events:
+
+```lua filename="config.lua"
+showNotification = function(title, message, type, duration)
+    TriggerEvent("esx:showNotification", title, message, type, duration)
+end,
+showHelpNotification = function(message)
+    TriggerEvent("esx:showHelpNotification", message)
+end
+```
+
+**QBCore / Qbox servers** usually need to replace these with events or exports your stack uses (for example ox_lib notify, or QBCore notify). Until you do, notifications routed through these hooks may not appear.
+
+The `type` parameter is documented in the Lua annotation as `info`, `success`, `error`, or `warning` (check your `config.lua` comment for the exact spelling your build uses).
+
+---
+
+[Framework](/ols_base/framework) · [Installation](/ols_base/installation)

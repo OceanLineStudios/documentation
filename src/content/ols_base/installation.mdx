@@ -1,0 +1,55 @@
+import { Steps } from "nextra/components";
+
+# Installation
+
+OLS Base must load **after** **oxmysql** and **ox_lib**, and **after** your **framework core** is running, so the correct bridge can initialize.
+
+## Supported framework cores
+
+Exactly **one** of these should be `started` (the others stay stopped or absent):
+
+| Framework | Resource name (typical) |
+| --- | --- |
+| ESX Legacy | `es_extended` |
+| QBCore | `qb-core` |
+| Qbox | `qbx_core` |
+
+The open bridge files in OLS Base check `GetResourceState(...)` and **do nothing** if that core is not started, so only the matching integration runs.
+
+## Recommended `server.cfg` order
+
+<Steps>
+### Database and library
+
+Start **oxmysql**, then **ox_lib** (or follow your host’s documented order).
+
+### Framework
+
+Start your core: e.g. `ensure es_extended`, or `ensure qb-core`, or `ensure qbx_core`.
+
+### OLS Base
+
+```cfg
+ensure ols_base
+```
+
+### Other OLS resources
+
+For example:
+
+```cfg
+ensure ols_hud
+```
+
+</Steps>
+
+## Editable file
+
+**`config.lua`** is listed under `escrow_ignore` in the manifest, so you can edit voice settings, distances, admin groups, and notification hooks without touching protected code. See [Configuration](/ols_base/config).
+
+## Verify
+
+- Server console: you should see a message such as **ESX Client Framework initialized** / **QB** / **QBox** matching your stack (from the open bridge scripts).
+- If nothing initializes, confirm the framework resource name is actually **started** and spelled as in the table above.
+
+[Framework details](/ols_base/framework) · [Configuration](/ols_base/config)

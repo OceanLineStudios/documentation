@@ -1,0 +1,75 @@
+# Server exports and events
+
+This page is for **scripters** who broadcast HUD content from the **server**. The announce pipeline uses the **client event name** from **`configs/main.lua`** → **`api.announce.event`** (default **`ols_hud:announce`**).
+
+## Server export: `announce`
+
+Registered in **`server/announce.lua`**. It forwards a payload to clients.
+
+**Signature (conceptual):**
+
+```lua
+exports.ols_hud:announce(data, target?)
+```
+
+| Argument | Description |
+| --- | --- |
+| `data` | Table with at least `title`, `description`, and optional `duration` (ms). You can use the same keys as in [Client exports](/ols_hud/client/exports) (announcements section). |
+| `target` | Optional player id (`source`). If omitted, defaults to **`-1`** (all clients). |
+
+**Examples:**
+
+```lua
+-- All players
+exports.ols_hud:announce({
+    title = "Maintenance",
+    description = "Restart in 10 minutes",
+    duration = 10000,
+})
+
+-- One player
+exports.ols_hud:announce({
+    title = "Welcome",
+    description = "Enjoy the city",
+    duration = 5000,
+}, source)
+```
+
+If **`api.announce.event`** is **`false`**, the export is not registered the same way — keep `event` set when you need server-driven announcements.
+
+## Staff command `/announce`
+
+When **`announceCommand.enabled`** is **`true`**, the server registers a chat command (default name from **`commandName`**). Only players in **`allowedGroups`** can use it; the message is built from the command args and sent to **all** clients with **`announceCommand.duration`**. See [Commands](/ols_hud/commands) and [Main config](/ols_hud/configs/main).
+
+## TriggerClientEvent instead of export
+
+You can call the same client event your config defines:
+
+```lua
+TriggerClientEvent("ols_hud:announce", -1, {
+    title = "Alert",
+    description = "Text",
+    duration = 8000,
+})
+```
+
+Use your **`api.announce.event`** string if you renamed it.
+
+## Notify from server
+
+Team chat, IDs, and OOC in the stock resource already **`TriggerClientEvent`** using **`api.notify.event`** (default **`ols_hud:notify`**). Other resources can do the same:
+
+```lua
+TriggerClientEvent("ols_hud:notify", targetSource, {
+    type = "info",
+    title = "Info",
+    message = "Hello",
+    duration = 5000,
+})
+```
+
+Again, replace the event name if you changed it in **`api.notify`**.
+
+---
+
+[Client exports](/ols_hud/client/exports) · [Main config](/ols_hud/configs/main)

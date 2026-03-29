@@ -1,0 +1,289 @@
+import { Table } from "nextra/components";
+
+# Main configuration
+
+The file **`configs/main.lua`** controls how the HUD identifies your server, which voice and chat behavior to use, staff commands, and how other scripts call notifications and progress bars.
+
+## What you are editing
+
+| File               | Role                                                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `configs/main.lua` | Server branding on the HUD, commands, voice display limits, built-in chat, and **API** names for notify / announce / help / progress |
+
+After any change, restart the **`ols_hud`** resource (or the whole server) so settings reload.
+
+## Server name and type
+
+These strings appear in the HUD (for example header or info areas):
+
+| Option        | Default (example) | What it does                       |
+| ------------- | ----------------- | ---------------------------------- |
+| `server.name` | `"Oceanline"`     | Display name of your server        |
+| `server.type` | `"Roleplay"`      | Short label for the type of server |
+
+## Settings command
+
+| Option            | Default      | What it does                                                                                   |
+| ----------------- | ------------ | ---------------------------------------------------------------------------------------------- |
+| `settingsCommand` | `"settings"` | Chat command that opens the in-game HUD settings (players can toggle elements and drag layout) |
+
+Example: if you set `settingsCommand = "hud"`, players use `/hud`.
+
+## Voice display
+
+| Option          | Default | What it does                                                                                                                                                |
+| --------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maxVoiceRange` | `3`     | For **pma-voice**, caps how many proximity “steps” the HUD shows at the top. **Salty Chat** can override the max with the live range count from the plugin. |
+
+## Chat and help prompt
+
+| Option               | Default | What it does                                                                                                                                                                                       |
+| -------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `disableChat`        | `false` | If `true`, the HUD’s **built-in chat** is turned off. Use this if another resource handles chat.                                                                                                   |
+| `autoHideHelpNotify` | `true`  | If `true`, the small “press key” help prompt hides on its own after a short time. If `false`, it stays until something calls **hide help notify** (see [Client exports](/ols_hud/client/exports)). |
+
+## Staff and player commands
+
+Each block can be turned off with `enabled = false`. Command **names** are configurable; defaults below match the stock config.
+
+### `allowedGroups` (plain language)
+
+`allowedGroups` is a list of **group names** your **framework** exposes through OLS Base (for example `admin`, `mod`). The server checks them when someone runs a restricted command. Use the same names your **ESX / QBCore / Qbox** setup uses for jobs or staff ranks (see [OLS Base](/ols_base/framework)).
+
+### Announce (`announceCommand`)
+
+**Who can use:** players in any listed group.  
+**Who sees it:** everyone online gets the big announcement banner.
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Field</Table.Th>
+      <Table.Th>Type</Table.Th>
+      <Table.Th>Default (example)</Table.Th>
+      <Table.Th>Meaning</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>
+        <code>enabled</code>
+      </Table.Td>
+      <Table.Td>boolean</Table.Td>
+      <Table.Td>
+        <code>true</code>
+      </Table.Td>
+      <Table.Td>Register the command or not</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>commandName</code>
+      </Table.Td>
+      <Table.Td>string</Table.Td>
+      <Table.Td>
+        <code>"announce"</code>
+      </Table.Td>
+      <Table.Td>
+        In-game command (e.g. <code>/announce</code>)
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>allowedGroups</code>
+      </Table.Td>
+      <Table.Td>list of strings</Table.Td>
+      <Table.Td>
+        <code>{'{ "admin" }'}</code>
+      </Table.Td>
+      <Table.Td>Who may broadcast</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>duration</code>
+      </Table.Td>
+      <Table.Td>number (ms)</Table.Td>
+      <Table.Td>
+        <code>10000</code>
+      </Table.Td>
+      <Table.Td>How long the banner stays</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### Team chat (`teamChatCommand`)
+
+**Who can use:** players in any listed group.  
+**Who sees it:** only players who share **at least one** of those groups (staff-to-staff style).
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Field</Table.Th>
+      <Table.Th>Type</Table.Th>
+      <Table.Th>Default (example)</Table.Th>
+      <Table.Th>Meaning</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>
+        <code>enabled</code>
+      </Table.Td>
+      <Table.Td>boolean</Table.Td>
+      <Table.Td>
+        <code>true</code>
+      </Table.Td>
+      <Table.Td>Register commands or not</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>commandNames</code>
+      </Table.Td>
+      <Table.Td>list of strings</Table.Td>
+      <Table.Td>
+        <code>{'{ "teamchat", "tc" }'}</code>
+      </Table.Td>
+      <Table.Td>
+        Aliases, e.g. <code>/teamchat</code> and <code>/tc</code>
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>allowedGroups</code>
+      </Table.Td>
+      <Table.Td>list of strings</Table.Td>
+      <Table.Td>
+        <code>{'{ "admin" }'}</code>
+      </Table.Td>
+      <Table.Td>Who may send and who is in the recipient pool</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### Nearby IDs (`idsCommand`)
+
+**Who can use:** typically everyone (command is registered without an extra group check in the stock script).  
+**What it does:** lists **nearby players’ character names** in a notification.
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Field</Table.Th>
+      <Table.Th>Type</Table.Th>
+      <Table.Th>Default (example)</Table.Th>
+      <Table.Th>Meaning</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>
+        <code>enabled</code>
+      </Table.Td>
+      <Table.Td>boolean</Table.Td>
+      <Table.Td>
+        <code>true</code>
+      </Table.Td>
+      <Table.Td>Register the command or not</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>commandName</code>
+      </Table.Td>
+      <Table.Td>string</Table.Td>
+      <Table.Td>
+        <code>"ids"</code>
+      </Table.Td>
+      <Table.Td>Command name</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>radius</code>
+      </Table.Td>
+      <Table.Td>number (meters)</Table.Td>
+      <Table.Td>
+        <code>5.0</code>
+      </Table.Td>
+      <Table.Td>Search radius around the player</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### Local OOC (`oocCommand`)
+
+**Who can use:** everyone (stock script).  
+**Who sees it:** players within range of the speaker.
+
+The config includes `oocCommand.radius` for how far OOC should reach. In the current server script, the **nearby-player search for OOC uses the same radius as `idsCommand`** (not `oocCommand.radius`). Until that is aligned in code, changing **`idsCommand.radius`** also changes who receives **OOC**. See [Commands](/ols_hud/commands) for usage.
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Field</Table.Th>
+      <Table.Th>Type</Table.Th>
+      <Table.Th>Default (example)</Table.Th>
+      <Table.Th>Meaning</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>
+        <code>enabled</code>
+      </Table.Td>
+      <Table.Td>boolean</Table.Td>
+      <Table.Td>
+        <code>true</code>
+      </Table.Td>
+      <Table.Td>Register the command or not</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>commandName</code>
+      </Table.Td>
+      <Table.Td>string</Table.Td>
+      <Table.Td>
+        <code>"ooc"</code>
+      </Table.Td>
+      <Table.Td>Command name</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <code>radius</code>
+      </Table.Td>
+      <Table.Td>number (meters)</Table.Td>
+      <Table.Td>
+        <code>5.0</code>
+      </Table.Td>
+      <Table.Td>Intended OOC range (see note above)</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+## API block (`api`)
+
+The `api` table lets you **rename** exports and events and **reorder** arguments for:
+
+- `notify`, `announce`, `helpNotify`, `hideHelpNotify`, `progress`, `cancelProgress`
+
+Set `export` or `event` to `false` to disable that integration path.
+
+Developers: see [Client exports](/ols_hud/client/exports) and [Server exports](/ols_hud/server/exports) for examples. The comments inside `configs/main.lua` also describe positional vs table arguments.
+
+## Minimal example (structure only)
+
+```lua filename="configs/main.lua"
+return {
+    server = { name = "My City", type = "Roleplay" },
+    settingsCommand = "settings",
+    maxVoiceRange = 3,
+    announceCommand = { enabled = true, commandName = "announce", allowedGroups = { "admin" }, duration = 10000 },
+    teamChatCommand = { enabled = true, commandNames = { "teamchat", "tc" }, allowedGroups = { "admin" } },
+    idsCommand = { enabled = true, commandName = "ids", radius = 5.0 },
+    oocCommand = { enabled = true, commandName = "ooc", radius = 5.0 },
+    disableChat = false,
+    autoHideHelpNotify = true,
+    api = { -- see file for full default api table
+    },
+}
+```
+
+Next: [Safezones](/ols_hud/configs/safezone) for `configs/safezone.lua`.

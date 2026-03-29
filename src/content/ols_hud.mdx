@@ -1,0 +1,61 @@
+---
+asIndexPage: true
+---
+
+import Image from "next/image";
+import { Steps } from "nextra/components";
+
+# OLS HUD
+
+**OLS HUD** is the on-screen interface for your FiveM server: status, speedometer, chat, notifications, announcements, progress bars, safe zones, money, voice level, weapon info, and an in-game settings panel. It is built for the **OceanLineStudios** stack (**ols_base**) and uses a modern web UI.
+
+<Image src="/scripts/ols_hud.png" alt="OLS HUD" width={1000} height={1000} />
+
+> [!TIP]
+>
+> You do **not** need to be a developer to change how the HUD looks and behaves. Most changes are made by editing files in the `configs/`, `locales/`, and `data/` folders inside the resource.
+
+> [!NOTE]
+>
+> If you bought an escrowed build, those folders are usually still editable (they are listed under `escrow_ignore` in the resource manifest). Always keep a backup before editing.
+
+## What you can configure
+
+| Topic                                                         | Where to read                                                                        |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Installing and starting the resource                          | [Installation](/ols_hud/installation)                                                |
+| Main settings (server name, commands, voice, chat, API names) | [Main config](/ols_hud/configs/main)                                                 |
+| Safe zones (no-PvP areas, blips, rules inside the bubble)     | [Safezones](/ols_hud/configs/safezone)                                               |
+| Languages and postal codes on the map                         | [Locales & data files](/ols_hud/configs/locales-and-data)                            |
+| In-game commands (announce, OOC, IDs, team chat, settings)    | [Commands](/ols_hud/commands)                                                        |
+| Something not working                                         | [Common issues](/ols_hud/common-issues)                                              |
+| Calling the HUD from other scripts                            | [Client exports](/ols_hud/client/exports), [Server exports](/ols_hud/server/exports) |
+| Shared stack (framework bridge, voice detection, base config) | [OLS Base](/ols_base)                                                                |
+
+## Quick requirements
+
+These resources **must** be installed and started **before** OLS HUD (see [Installation](/ols_hud/installation) for details):
+
+- Your **framework core** (e.g. **ESX** `es_extended`, **QBCore** `qb-core`, or **Qbox** `qbx_core`) — required by [OLS Base](/ols_base), which HUD uses
+- [ox_lib](https://github.com/overextended/ox_lib)
+- [oxmysql](https://github.com/overextended/oxmysql)
+- **ols_base** — see [OLS Base](/ols_base) for install order and `config.lua`
+
+## Quick install (overview)
+
+<Steps>
+### Install dependencies
+
+Install and `ensure` **ox_lib**, **oxmysql**, and **ols_base** in the correct order for your server.
+
+### Add the resource
+
+Place the `ols_hud` folder in your server `resources` directory (for example under `[ols]`).
+
+### Enable in server.cfg
+
+Add `ensure ols_hud` **after** the dependencies. Restart the server or start the resource.
+
+</Steps>
+
+For step-by-step detail, open [Installation](/ols_hud/installation).

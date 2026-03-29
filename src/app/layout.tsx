@@ -1,11 +1,11 @@
 /* eslint-env node */
+import Image from "next/image";
+import Link from "next/link";
 import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import { Head } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
-import Image from "next/image";
-import "../styles/globals.css";
-import Link from "next/link";
 import Tebex from "../icons/tebex";
+import "../styles/globals.css";
 
 export const metadata = {
   metadataBase: new URL("https://docs.OceanLineStudios.eu"),
@@ -60,7 +60,7 @@ export default async function RootLayout({
           <b>OceanLineStudios</b>
         </div>
       }
-      chatLink="https://discord.gg/85YNeDTBB9"
+      chatLink="https://discord.gg/7HXQWDZJ"
       children={
         <Link href="https://oceanlinestudios.tebex.io/" target="_blank">
           <Tebex />

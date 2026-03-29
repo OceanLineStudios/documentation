@@ -1,0 +1,61 @@
+import { Table } from "nextra/components";
+
+# Commands
+
+Commands below use the **default names** from `configs/main.lua`. If you renamed them in [Main config](/ols_hud/configs/main), use your names instead.
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Command</Table.Th>
+      <Table.Th>Who can use</Table.Th>
+      <Table.Th>What it does</Table.Th>
+      <Table.Th>Usage</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td><code>/settings</code> (default)</Table.Td>
+      <Table.Td>Everyone</Table.Td>
+      <Table.Td>Opens the HUD settings UI (toggle parts of the HUD, drag layout).</Table.Td>
+      <Table.Td><code>/settings</code> — or the name you set in <code>settingsCommand</code></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>/announce</code> (default)</Table.Td>
+      <Table.Td>Players in <code>allowedGroups</code> for <code>announceCommand</code></Table.Td>
+      <Table.Td>Broadcasts a server-wide announcement banner to all players.</Table.Td>
+      <Table.Td><code>/announce Your message here</code></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>/teamchat</code> / <code>/tc</code> (defaults)</Table.Td>
+      <Table.Td>Players in <code>allowedGroups</code> for <code>teamChatCommand</code></Table.Td>
+      <Table.Td>Sends a staff-style message as a notification to everyone who shares those groups.</Table.Td>
+      <Table.Td><code>/teamchat Hello team</code> or <code>/tc Hello team</code></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>/ids</code> (default)</Table.Td>
+      <Table.Td>Everyone (stock script)</Table.Td>
+      <Table.Td>Shows nearby players’ names in a notification, or a message if nobody is in range.</Table.Td>
+      <Table.Td><code>/ids</code></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>/ooc</code> (default)</Table.Td>
+      <Table.Td>Everyone (stock script)</Table.Td>
+      <Table.Td>Local out-of-character chat: notifies players near you.</Table.Td>
+      <Table.Td><code>/ooc Your message</code></Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+## Ranges for `/ids` and `/ooc`
+
+- **`idsCommand.radius`** — how far the `/ids` command looks for other players (meters).
+- **`oocCommand.radius`** — intended OOC range in config. **Current behavior:** the server script uses the **same radius as `idsCommand`** when gathering nearby players for OOC. See [Main config](/ols_hud/configs/main#local-ooc-ooccommand).
+
+## Disabling commands
+
+Set `enabled = false` inside the matching block in `configs/main.lua` for announce, team chat, IDs, or OOC. Restart **`ols_hud`** after saving.
+
+## Locale text
+
+Titles and bodies for announce, team chat, IDs, and OOC use **`locales/*.json`**. Edit those files to change wording — see [Locales & data files](/ols_hud/configs/locales-and-data).

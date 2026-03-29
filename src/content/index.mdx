@@ -1,5 +1,31 @@
-import { Bleed } from "nextra/components";
+---
+title: Introduction
+---
 
-# Introduction
+# Welcome to OceanLineStudios
 
-OceanLineStudios
+**OceanLineStudios** builds scripts and tooling for **FiveM** servers—focused on a cohesive stack you can install, configure, and run without unnecessary guesswork. This site is the **official documentation** for our published resources: how to set them up, what each config file does, and how server owners can tune behavior safely.
+
+## What we provide
+
+Our resources are designed to work together. The common foundation is **OLS Base**, which connects your server to your chosen framework (**ESX**, **QBCore**, or **Qbox**) and centralizes shared settings such as voice detection and admin groups. On top of that, products like **OLS HUD** add the in-game interface—chat, notifications, safe zones, and more—with most day-to-day changes done through config and locale files.
+
+## How to use this documentation
+
+Start with the resource you are installing. Each section explains dependencies, recommended start order, and which files you are expected to edit. Pages aimed at integrators (exports and events) are labeled clearly; everything else is written so non-developers can follow along.
+
+> [!TIP]
+>
+> Always restart the relevant resource—or the server—after changing Lua or JSON config so changes load cleanly.
+
+## Documentation resources
+
+- [OLS Base](/ols_base) — install order, framework selection, and `config.lua` (voice, distances, admin groups, notification hooks).
+- [OLS HUD](/ols_hud) — installation, main and safezone configuration, commands, troubleshooting, and script integration.
+
+## Community and store
+
+- **Discord** — support and announcements: [discord.gg/7HXQWDZJ](https://discord.gg/7HXQWDZJ) (also linked from the site header).
+- **Store** — Tebex: [oceanlinestudios.tebex.io](https://oceanlinestudios.tebex.io/).
+
+If something in these docs is unclear or outdated, open an issue or pull request on [GitHub](https://github.com/oceanlinestudios/documentation) using the “Edit this page” link when available.

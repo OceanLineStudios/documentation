@@ -1,0 +1,56 @@
+# Locales and data files
+
+These files control **translated text** and **postal codes** shown on the HUD. They live outside encrypted code in typical escrow builds, so you can edit them like normal files.
+
+## Locales (`locales/`)
+
+### Default languages
+
+The resource ships JSON files such as:
+
+- `en.json` — English  
+- `de.json` — German  
+
+### How translation works
+
+- Strings are grouped by feature (chat, commands, UI labels, settings, etc.).
+- Placeholders like `%s` are filled in by the game (for example a player name). **Keep** the same placeholders when you translate.
+
+### Changing the default language
+
+Language selection is driven by **ox_lib** locale settings on your server (the resource calls `lib.locale()` in `shared.lua`). Set your server’s locale the way your host documents for **ox_lib** / framework so players get the right file.
+
+### Adding a new language
+
+1. Copy `en.json` to a new file, for example `fr.json`.
+2. Translate the **values**; keep **keys** identical.
+3. Ensure your locale system is set to use that language code.
+
+If a key is missing, behavior depends on ox_lib fallbacks — always copy the full structure from `en.json` first.
+
+### What you might edit
+
+- Command titles and messages (`idsCommand`, `oocCommand`, `announceTitle`, …).
+- UI labels under `ui` (settings panel, chat placeholder, speedometer units, …).
+
+Invalid JSON (missing comma or quote) will break loading — use a JSON validator if unsure.
+
+## Postal data (`data/postals.json`)
+
+### What it is for
+
+The client loads **`data/postals.json`** to show the **nearest postal code** (or similar location aid) together with street and area on the HUD.
+
+### Editing
+
+- The file must stay **valid JSON**.
+- Structure must match what the HUD code expects (usually a list of entries with coordinates and codes). If you use a community postal pack, use the version packaged for your map or converter.
+- After edits, restart **`ols_hud`** (or the server).
+
+### Backup
+
+Keep a copy of the original `postals.json` before replacing it with another dataset.
+
+---
+
+[Main config](/ols_hud/configs/main) · [Installation](/ols_hud/installation)

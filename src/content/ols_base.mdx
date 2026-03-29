@@ -1,0 +1,49 @@
+---
+asIndexPage: true
+---
+
+import { Steps } from "nextra/components";
+
+# OLS Base
+
+**OLS Base** is the shared layer for OceanLineStudios resources. It connects your server to **ESX**, **QBCore**, or **Qbox** (whichever core you run), loads **`config.lua`**, and provides the glue other OLS scripts rely on.
+
+> [!NOTE]
+>
+> This documentation covers **server-owner settings** only: installation order, **which framework is used**, and **`config.lua`**. It does **not** describe internal developer utilities (`OLS.Utils`, exports, or `imports.lua`).
+
+## What you can configure
+
+| Topic | Where to read |
+| --- | --- |
+| Install order and framework requirements | [Installation](/ols_base/installation) |
+| `config.lua` (voice, distances, admin groups, notifications) | [Configuration](/ols_base/config) |
+| How ESX / QBCore / Qbox is picked | [Framework](/ols_base/framework) |
+
+## Dependencies (manifest)
+
+OLS Base requires:
+
+- [ox_lib](https://github.com/overextended/ox_lib)
+- [oxmysql](https://github.com/overextended/oxmysql)
+
+You must also run **one** supported framework core — see [Framework](/ols_base/framework).
+
+## Quick install
+
+<Steps>
+### Start your framework
+
+Ensure **only** the stack you use (e.g. `es_extended` for ESX) is installed and started.
+
+### Start oxmysql and ox_lib
+
+These must be running before **ols_base**.
+
+### Start ols_base
+
+Add `ensure ols_base` after the above, then start any OceanLineStudios resources (e.g. [OLS HUD](/ols_hud)).
+
+</Steps>
+
+Details: [Installation](/ols_base/installation).

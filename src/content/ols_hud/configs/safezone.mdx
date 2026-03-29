@@ -1,0 +1,99 @@
+import { Table } from "nextra/components";
+
+# Safezone configuration
+
+The file **`configs/safezone.lua`** defines one or more **safe zones**: spherical areas on the map where you can restrict combat, weapons, jumping, vehicle speed, and more. Each entry is a **table** in the returned list.
+
+## Mental model
+
+- **`coords`** — center of the zone (X, Y, Z in the game world).
+- **`radius`** — size of the sphere in **meters**. Inside that bubble, the rules apply.
+- **`options`** — what players **cannot** do (or special modes like ghosting) while inside.
+- **`blip`** — optional map marker for players.
+- **`onEnter` / `onExit` / `nearby`** — optional Lua functions if you add custom logic (advanced).
+
+You can **duplicate** the example block in the file to add more zones and change coordinates and radius for each.
+
+## Example entry (reference)
+
+```lua filename="configs/safezone.lua"
+{
+    coords = vec3(216.7174, -905.3514, 30.6922),
+    radius = 120.0,
+    borderColor = 1,
+    blip = { ... },
+    options = { ... },
+    onEnter = function() end,
+    onExit = function() end,
+    nearby = function() end,
+}
+```
+
+## Options (inside `options`)
+
+| Option | What it does |
+| --- | --- |
+| `disableDriveBy` | Stops shooting from vehicles (drive-by). |
+| `disableShooting` | Stops firing weapons. |
+| `disableAttacking` | Stops melee attacks. |
+| `disableJump` | Stops jumping. |
+| `disableWeaponWheel` | Disables the weapon wheel (includes integration with ox_inventory where applicable). |
+| `disarmOnEnter` | Forces unarmed when entering. |
+| `ghostMode` | Players pass through each other (no collision). |
+| `disableIdleCam` | Stops the idle cinematic camera. |
+| `vehicleSpeedLimit` | Maximum vehicle speed in **m/s**. The sample file uses a helper `kmh(100)` to convert km/h. |
+
+## Blip (map marker)
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Field</Table.Th>
+      <Table.Th>Meaning</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td><code>enabled</code></Table.Td>
+      <Table.Td>Show a blip on the map.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>withRadius</code></Table.Td>
+      <Table.Td>Show a circle around the zone on the map.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>alpha</code></Table.Td>
+      <Table.Td>Transparency (0–255).</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>label</code></Table.Td>
+      <Table.Td>Text on the map.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>color</code></Table.Td>
+      <Table.Td>Blip color ID — <a href="https://docs.fivem.net/docs/game-references/blips/">FiveM blip colors</a>.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>scale</code></Table.Td>
+      <Table.Td>Size (0.0–1.0).</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><code>sprite</code></Table.Td>
+      <Table.Td>Icon ID — <a href="https://docs.fivem.net/docs/game-references/blips/">FiveM blip sprites</a>.</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+## Callbacks
+
+| Callback | When it runs |
+| --- | --- |
+| `onEnter` | Player enters the zone. |
+| `onExit` | Player leaves the zone. |
+| `nearby` | While the player is near the zone (implementation-specific; use for custom effects). |
+
+## Scripts integration
+
+Other resources can react to safe zone state using client exports and events — see **Safezone** in [Client exports](/ols_hud/client/exports).
+
+Related: [Main config](/ols_hud/configs/main) · [Common issues](/ols_hud/common-issues)

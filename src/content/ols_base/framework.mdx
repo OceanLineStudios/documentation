@@ -1,0 +1,37 @@
+# Framework selection
+
+OLS Base ships **three open bridge layers** (client + server pairs):
+
+- **ESX** — `client/esx.lua`, `server/esx.lua`
+- **QBCore** — `client/qbcore.lua`, `server/qbcore.lua`
+- **Qbox** — `client/qbox.lua`, `server/qbox.lua`
+
+There is **no separate “framework” dropdown in `config.lua`**. Which bridge runs is decided at runtime:
+
+1. Each file starts with a check on the **framework resource state**.
+2. If that core is **not** `started`, the file **returns immediately** and does not register that bridge.
+3. Only the bridge matching your **actually started** core is active.
+
+## Resource names checked
+
+| Bridge | Required resource name |
+| --- | --- |
+| ESX | `es_extended` |
+| QBCore | `qb-core` |
+| Qbox | `qbx_core` |
+
+Names must match **exactly** what appears in your `resources` folder and `ensure` lines.
+
+## Using only one framework
+
+Run **one** of ESX, QBCore, or Qbox. If multiple cores were started by mistake, behavior is undefined — keep a single stack.
+
+## Relationship to OLS HUD
+
+[OLS HUD](/ols_hud) depends on **ols_base** and **ox_lib** (and **oxmysql** in its manifest) but does **not** declare your framework as a dependency. You are responsible for starting **e.g. `es_extended`** before **ols_base** so money, jobs, groups, and HUD features work.
+
+## Open vs protected files
+
+Under `escrow_ignore`, the **bridge** Lua files and **`config.lua`** stay readable so you can audit how your framework is wired. Other parts of the resource may still be escrowed; treat this page as describing the **published open surface** only.
+
+[Configuration](/ols_base/config) · [Installation](/ols_base/installation)

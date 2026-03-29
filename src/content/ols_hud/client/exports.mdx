@@ -1,0 +1,99 @@
+# Client exports and events
+
+This page is for **scripters** who call OLS HUD from other **client** Lua resources. Names and argument order come from **`configs/main.lua`** → **`api`**. If you rename or disable an entry, use your configured names instead of the defaults below.
+
+## Calling style
+
+- **Positional arguments** — order matches `params` in config (e.g. `type`, `title`, `message`, `duration` for notify).
+- **Table argument** — pass one table with named keys; the HUD maps them regardless of order.
+
+```lua
+exports.ols_hud:notify("success", "Title", "Message", 5000)
+exports.ols_hud:notify({ type = "success", title = "Title", message = "Message", duration = 5000 })
+```
+
+Events use the same payloads. Register with **`AddEventHandler`** for local use; from the **server**, use **`TriggerClientEvent`** with the configured event name.
+
+---
+
+## Notifications (default: `notify` / `ols_hud:notify`)
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | string | `"info"` | `info`, `warning`, `error`, `success` |
+| `title` | string | `""` | Title |
+| `message` | string | `""` | Body |
+| `duration` | number | `5000` | Milliseconds |
+
+---
+
+## Announcements (default: `announce` / `ols_hud:announce`)
+
+Client-side call shows the banner locally. For **everyone**, use the **server** export or `TriggerClientEvent` to `-1` — see [Server exports](/ols_hud/server/exports).
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | string | `""` | Title |
+| `description` | string | `""` | Body |
+| `duration` | number | `10000` | Milliseconds |
+
+---
+
+## Help notify (default: `helpNotify` / `hideHelpNotify`)
+
+| Export / event | Parameters | Description |
+| --- | --- | --- |
+| `helpNotify` | `text`, `key` | Shows the key hint (e.g. “Press E …”, key `E`). |
+| `hideHelpNotify` | none | Hides the hint. |
+
+If **`autoHideHelpNotify`** is on in config, the hint also clears after a short timeout.
+
+---
+
+## Progress bar (default: `progress` / `cancelProgress`)
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `""` | Label |
+| `duration` | number | `5000` | Milliseconds |
+| `canCancel` | boolean | `false` | Allow cancel (e.g. ESC) |
+
+The **`progress`** export is **blocking**: it returns **`true`** when finished, **`false`** if cancelled.
+
+```lua
+local success = exports.ols_hud:progress("Crafting...", 5000, true)
+if success then
+    -- completed
+else
+    -- cancelled
+end
+```
+
+`cancelProgress` forces an active bar to stop and resolves the wait as cancelled.
+
+---
+
+## HUD visibility
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `toggleHud` | export | `exports.ols_hud:toggleHud(boolean)` — `true` show, `false` hide. |
+| `isHudVisible` | export | Returns whether the HUD is shown (`boolean`). |
+| `ols_hud:toggleHud` | event | Same as export; can be triggered from server with `TriggerClientEvent`. |
+
+The NUI may start hidden until load completes; the resource shows the HUD when the player is loaded or the resource starts, unless something hides it.
+
+---
+
+## Safezone
+
+| Name | Description |
+| --- | --- |
+| `isInSafezone` | Export: `exports.ols_hud:isInSafezone()` → `boolean`. |
+| `ols_hud:safezoneChanged` | Local event: `AddEventHandler("ols_hud:safezoneChanged", function(state) end)` — `state` is `true` inside, `false` outside. |
+
+---
+
+## Config reference
+
+Rename or disable integrations in **`configs/main.lua`** under **`api`**. Set **`export`** or **`event`** to **`false`** to turn off that path. See [Main config](/ols_hud/configs/main) for the full table.

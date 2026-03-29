@@ -1,0 +1,61 @@
+import { Steps } from "nextra/components";
+
+# Installation
+
+This page walks you through installing **OLS HUD** on a FiveM server. Follow the order below so dependencies load before the HUD.
+
+## Before you start
+
+You need:
+
+- A working **FXServer**
+- One **framework core** running before OLS Base — see [OLS Base — Framework](/ols_base/framework) (e.g. `es_extended`, `qb-core`, or `qbx_core`)
+- **ox_lib** and **oxmysql**
+- **ols_base** (OceanLineStudios; loads before HUD — see [OLS Base — Installation](/ols_base/installation))
+
+## Install steps
+
+<Steps>
+### Install and start dependencies
+
+Add and `ensure` these resources **before** OLS HUD in `server.cfg` (exact names and order can match your host’s guide):
+
+- `oxmysql`
+- `ox_lib`
+- Your framework core (e.g. `es_extended`), then **`ols_base`** — order matters; see [OLS Base](/ols_base/installation)
+
+### Copy OLS HUD into resources
+
+Place the folder **`ols_hud`** inside your server’s `resources` tree (for example `resources/[ols]/ols_hud`).
+
+### Add `ensure` to server.cfg
+
+Add a line **after** your dependencies:
+
+```cfg
+ensure ols_hud
+```
+
+### Restart or start the resource
+
+Restart the server, or use your panel’s option to start `ols_hud` after its dependencies are running.
+
+</Steps>
+
+## Escrow and editable files
+
+If your copy is **escrow-protected**, encrypted code stays locked, but the manifest often still ships these paths as editable:
+
+- `configs/**` — main and safezone settings
+- `locales/**` — language strings
+- `data/**` — files such as postal data
+
+That lets you tune behavior and text without touching compiled scripts.
+
+## Verify it works
+
+1. Join the server as a player.
+2. Confirm the HUD appears after load (status, money display, etc.).
+3. Try the settings command (default `/settings` unless you changed `settingsCommand` in [Main config](/ols_hud/configs/main)).
+
+If something fails, see [Common issues](/ols_hud/common-issues).

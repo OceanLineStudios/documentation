@@ -1,0 +1,38 @@
+# Common issues
+
+## HUD does not appear or stays blank
+
+1. **Start order** — `ensure ols_hud` only **after** `oxmysql`, `ox_lib`, and `ols_base` (see [Installation](/ols_hud/installation)).
+2. **Hidden on purpose** — Another script may call **toggle HUD** off (photo mode, menus). See [Client exports](/ols_hud/client/exports#hud-visibility).
+
+## “Resource failed to start” or dependency errors
+
+Check the server console. The manifest requires **`ox_lib`**, **`ols_base`**, and **`oxmysql`**. Fix missing resources or typos in `ensure` names.
+
+## Built-in chat is gone / I want default GTA chat
+
+If **`disableChat`** is `true` in `configs/main.lua`, the HUD chat is off. Set it to `false` and restart the resource, or keep it off if you use a different chat resource.
+
+## Voice indicator wrong or missing
+
+1. Run a supported voice resource (**pma-voice** or **Salty Chat**) and ensure it starts before or with the HUD.
+2. **Voice detection** is configured in **OLS Base** `config.lua` (`voiceSystem`, `voiceResourceName`) — see [OLS Base — Configuration](/ols_base/config).
+3. The HUD’s **`maxVoiceRange`** only changes how many proximity **steps** are shown for pma-voice; it does not fix a missing voice resource.
+
+## Announcements or notifications never show
+
+1. Confirm **`api.notify.event`** and **`api.announce.event`** are not set to `false` in `configs/main.lua` if you rely on events.
+2. For **staff announce**, check the player’s group matches **`allowedGroups`** for `announceCommand`.
+
+## Safe zone rules not applying
+
+1. Confirm coordinates and **radius** in `configs/safezone.lua` cover the area you expect.
+2. Only **one** list of zones is loaded — typos or Lua syntax errors can stop the file from loading; check the server/client console.
+
+## Postal or street text wrong
+
+Replace or edit **`data/postals.json`** carefully (valid JSON). See [Locales & data files](/ols_hud/configs/locales-and-data).
+
+## Still stuck
+
+Double-check [Installation](/ols_hud/installation), then verify **F8** client console and **server** console for red errors mentioning `ols_hud`.
